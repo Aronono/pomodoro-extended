@@ -43,6 +43,7 @@ public class StartTimer : MonoBehaviour
         timeStart = timeStart + elapsedTime;
         textTimer.text = Mathf.Round(timeStart).ToString();
         elapsedTime = 0;
+        
     }
 
     public void TimerSkip()
@@ -50,13 +51,16 @@ public class StartTimer : MonoBehaviour
         break_time = !break_time;
         if (break_time == true)
         {
+            TimerStop();
             timeStart = 30;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else
         {
+            TimerStop();
             timeStart = 60;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
+        elapsedTime = 0;
     }
 }
