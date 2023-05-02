@@ -11,7 +11,8 @@ public class StartTimer : MonoBehaviour
     public TimerPreset preset;
     public Text textTimer;
     public float timeStart;
-    public float elapsedTime = 0;
+    public int work_periods = 3;
+
 
     bool timer_running = false;
     bool break_time = false;
@@ -32,12 +33,24 @@ public class StartTimer : MonoBehaviour
         if (timer_running)
         {
             timeStart -= Time.deltaTime;
-            elapsedTime += Time.deltaTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
-        if (timeStart < 0)
+        if (timeStart <= 0 && break_time == false)
         {
-            timeStart = 0;
+            break_time = true;
+            work_periods--;
+            timeStart = preset.BreakTime;
+        }
+        if (timeStart <= 0 && break_time == true)
+        {
+            break_time = false;
+            timeStart = preset.InitialTime;
+        }
+        if (work_periods == 0)
+        {
+            break_time = true;
+            timeStart = preset.BigBreakTime;
+            work_periods = 3;
         }
     }
 
@@ -45,15 +58,24 @@ public class StartTimer : MonoBehaviour
     public void TimerStart()
     {
         timer_running = !timer_running;
-        timeStart = preset.InitialTime - elapsedTime;
+        if (break_time == false)
+        {
+            timeStart = preset.InitialTime;
+        }
     }
 
     public void TimerStop()
     {
         timer_running = false;
-        timeStart += elapsedTime;
+        if (break_time == false)
+        {
+            timeStart = preset.InitialTime;
+        }
+        if (break_time == true)
+        {
+            timeStart = preset.BreakTime;
+        }
         textTimer.text = Mathf.Round(timeStart).ToString();
-        elapsedTime = 0;
     }
 
     public void TimerSkip()
@@ -62,6 +84,7 @@ public class StartTimer : MonoBehaviour
         if (break_time == true)
         {
             timeStart = preset.BreakTime;
+            work_periods--;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else
@@ -79,13 +102,14 @@ public class StartTimer : MonoBehaviour
     }
 
     private void InitPresets()
-    { 
+    {
         timerPresets.Add(new TimerPreset());
         timerPresets.Add(new TimerPreset(20, 15, 20));
         timerPresets.Add(new TimerPreset(180, 30, 60));
+        timerPresets.Add(new TimerPreset(5, 2, 3));
 
         List<string> optList = new();
-        foreach(TimerPreset tp in timerPresets)
+        foreach (TimerPreset tp in timerPresets)
         {
             optList.Add(tp.Optionify());
         }
