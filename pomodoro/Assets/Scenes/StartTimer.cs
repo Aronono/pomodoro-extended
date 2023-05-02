@@ -106,7 +106,6 @@ public class StartTimer : MonoBehaviour
         timerPresets.Add(new TimerPreset());
         timerPresets.Add(new TimerPreset(20, 15, 20));
         timerPresets.Add(new TimerPreset(180, 30, 60));
-        timerPresets.Add(new TimerPreset(5, 2, 3));
 
         List<string> optList = new();
         foreach (TimerPreset tp in timerPresets)
