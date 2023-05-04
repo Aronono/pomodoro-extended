@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sounds : MonoBehaviour
+// Скрипт для управления звуками
+public class AudioManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,5 +15,11 @@ public class Sounds : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // Публичный метод для проигрывания звука
+    public void PlayAudio(AudioClip clip)
+    {
+        GetComponent<AudioSource> ().PlayOneShot (clip);
     }
 }
