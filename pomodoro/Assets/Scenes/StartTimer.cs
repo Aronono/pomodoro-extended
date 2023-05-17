@@ -13,6 +13,8 @@ public class StartTimer : MonoBehaviour
     public float timeStart;
     public int work_periods = 3;
 
+    public AudioClip cycleEndSnd;  // Звук при окончании цикла
+    public AudioSource audiosrc;   // Аудиосорс нужен
 
     bool timer_running = false;
     bool break_time = false;
@@ -35,22 +37,30 @@ public class StartTimer : MonoBehaviour
             timeStart -= Time.deltaTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
+
+        // Начало перерыва
         if (timeStart <= 0 && break_time == false)
         {
             break_time = true;
             work_periods--;
             timeStart = preset.BreakTime;
         }
+
+        // Возобновление рабочего цикла
         if (timeStart <= 0 && break_time == true)
         {
             break_time = false;
             timeStart = preset.InitialTime;
         }
-        if (work_periods == 0)
+
+        // Закончился цикл, большой перерыв
+        if (work_periods == 0)                      
         {
+            timer_running = false               // Остановлен таймер
             break_time = true;
             timeStart = preset.BigBreakTime;
             work_periods = 3;
+            audiosrc.PlayOneShot(cycleEndSnd);  // Звук победы
         }
     }
 
