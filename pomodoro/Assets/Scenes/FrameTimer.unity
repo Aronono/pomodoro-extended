@@ -667,7 +667,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.0565926, y: 0.1262963}
   m_AnchorMax: {x: 0.9361112, y: 0.3985926}
-  m_AnchoredPosition: {x: 4, y: -0.99993896}
+  m_AnchoredPosition: {x: 4, y: -1}
   m_SizeDelta: {x: 9.198303, y: -3.1138916}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &599409779
@@ -892,7 +892,7 @@ GameObject:
   - component: {fileID: 770119096}
   - component: {fileID: 770119095}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Stop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -977,7 +977,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 770119097}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1320188519}
+        m_TargetAssemblyTypeName: StartTimer, Assembly-CSharp
+        m_MethodName: TimerStop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &770119097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1030,7 +1042,7 @@ GameObject:
   - component: {fileID: 770986527}
   - component: {fileID: 770986526}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1115,7 +1127,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 770986528}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1320188519}
+        m_TargetAssemblyTypeName: StartTimer, Assembly-CSharp
+        m_MethodName: TimerStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &770986528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1320,7 +1344,7 @@ GameObject:
   - component: {fileID: 969513028}
   - component: {fileID: 969513027}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Skip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1405,7 +1429,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 969513029}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1320188519}
+        m_TargetAssemblyTypeName: StartTimer, Assembly-CSharp
+        m_MethodName: TimerSkip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &969513029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,6 +1917,7 @@ GameObject:
   - component: {fileID: 1320188517}
   - component: {fileID: 1320188516}
   - component: {fileID: 1320188515}
+  - component: {fileID: 1320188519}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1970,6 +2007,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1320188519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320188514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec0873f947ef4745b3c26f35f9d4125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textTimer: {fileID: 1030580478}
+  timeStart: 0
+  work_periods: 3
+  cycleEndSnd: {fileID: 0}
+  audiosrc: {fileID: 0}
 --- !u!1 &1378756068
 GameObject:
   m_ObjectHideFlags: 0
