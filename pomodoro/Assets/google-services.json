@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "499654214911",
+    "project_id": "pomodorotracker-557b6",
+    "storage_bucket": "pomodorotracker-557b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499654214911:android:899a9847f418beb202f8ca",
+        "android_client_info": {
+          "package_name": "com.XDTeam.PomodoroTracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499654214911-ru0k61v84joklfvv8dq7i26b3528eoi1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj2zZrleaFksOlrA6jJoHMGdr9aHC90ds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499654214911-ru0k61v84joklfvv8dq7i26b3528eoi1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
