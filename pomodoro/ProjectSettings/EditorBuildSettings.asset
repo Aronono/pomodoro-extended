@@ -8,6 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/FrameTimer.unity
+    guid: b016493ac1de20d4bb44e8bb0053d338
+  - enabled: 1
+    path: Assets/Scenes/Authorization.unity
+    guid: 78e1cebda7672684d8924b80263220a8
+  - enabled: 1
+    path: Assets/Scenes/PresetFrame.unity
+    guid: 7cf64b2d2374a0b4cb5bfde5effe5b14
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 3fc8acdd13e6c734bafef6554d6fdbcd
+  - enabled: 1
+    path: Assets/Scenes/SettingsFrame.unity
+    guid: 67a036866852643498ae6ae61c544cfb
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f9048b47a99954f4389c9c07435f24dc, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: d0c4878e4c479094c895c7bb935d922a, type: 2}

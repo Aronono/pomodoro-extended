@@ -46,6 +46,7 @@ public class StartTimer : MonoBehaviour
             break_time = true;
             work_periods--;
             timeStart = preset.BreakTime;
+            audiosrc.PlayOneShot(cycleEndSnd);  // Звук победы 
         }
 
         // Возобновление рабочего цикла
@@ -63,7 +64,6 @@ public class StartTimer : MonoBehaviour
             work_periods = 3;
             big_break_time = true;
             timeStart = preset.BigBreakTime;
-            audiosrc.PlayOneShot(cycleEndSnd);  // Звук победы 
         }
     }
 
