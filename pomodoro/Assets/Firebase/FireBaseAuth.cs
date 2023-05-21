@@ -84,16 +84,16 @@ public class FireBaseAuth : MonoBehaviour
             switch (authError)
             {
                 case AuthError.InvalidEmail:
-                    err_msg = "Incorrect login";
+                    err_msg += "Incorrect login";
                     break;
                 case AuthError.WrongPassword:
-                    err_msg = "Incorrect password";
+                    err_msg += "Incorrect password";
                     break;
                 case AuthError.MissingEmail:
-                    err_msg = "Missing email";
+                    err_msg += "Missing email";
                     break;
                 case AuthError.MissingPassword:
-                    err_msg = "Missing password";
+                    err_msg += "Missing password";
                     break;
             }
             Debug.Log(err_msg);
@@ -137,13 +137,13 @@ public class FireBaseAuth : MonoBehaviour
                 switch (authError)
                 {
                     case AuthError.InvalidEmail:
-                        err_msg = "Incorrect login";
+                        err_msg += "Incorrect login";
                         break;
                     case AuthError.MissingEmail:
-                        err_msg = "Missing email";
+                        err_msg += "Missing email";
                         break;
                     case AuthError.MissingPassword:
-                        err_msg = "Missing password";
+                        err_msg += "Missing password";
                         break;
                 }
                 Debug.Log(err_msg);
