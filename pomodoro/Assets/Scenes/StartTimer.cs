@@ -17,14 +17,18 @@ public class StartTimer : MonoBehaviour
     public Image timerBar;
     public float timeMax;
 
-    public AudioClip cycleEndSnd;  // Звук при окончании цикла
-    public AudioSource audiosrc;   // Аудиосорс нужен
+    public AudioClip cycleEndSnd;   // Звук при окончании цикла
+    public AudioSource audiosrc;    // Аудиосорс нужен
+    
+    public int money;               // Количество денег   
+    public TMP_Text moneyText;      // Отображение денег
 
     bool timer_running = false;
     bool break_time = false;
     bool big_break_time = false;
 
-    void Awake() //Это всё выполняется перед Start(), инициализирует пресеты и сразу ставит первый из списка активным
+    void Awake()                    // Это всё выполняется перед Start(),
+                                    // инициализирует пресеты и сразу ставит первый из списка активным
     {
         InitPresets();
         preset = timerPresets[0];
@@ -37,6 +41,12 @@ public class StartTimer : MonoBehaviour
         timeStart = preset.InitialTime;
         timeMax = preset.InitialTime;
         textTimer.text = preset.InitialTime.ToString();
+
+        if(PlayerPrefs.HasKey("money"))
+        {
+            money = PlayerPrefs.GetInt("money");
+            moneyText.text = money.ToString();
+        }
     }
 
     void Update()
@@ -56,7 +66,11 @@ public class StartTimer : MonoBehaviour
             work_periods--;
             timeStart = preset.BreakTime;
             timeMax = preset.BreakTime;
-            audiosrc.PlayOneShot(cycleEndSnd);  // Звук победы 
+
+            money++;                                // Плюс деньга
+            audiosrc.PlayOneShot(cycleEndSnd);      // Звук деньги
+            moneyText.text = money.ToString();      // Обновляем текст при получении деньги
+            PlayerPrefs.SetInt("money", money);
         }
 
         // Возобновление рабочего цикла
@@ -171,7 +185,7 @@ public class TimerPreset
 
     public TimerPreset()
     {
-        InitialTime = 60;
+        InitialTime = 5;            // Для теста денег уменьшил рабочий период
         BreakTime = 30;
         BigBreakTime = 45;
 
