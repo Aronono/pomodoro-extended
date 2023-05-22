@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static PresetManager;
 
 public class StartTimer : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class StartTimer : MonoBehaviour
     bool break_time = false;
     bool big_break_time = false;
 
-    void Awake() //Ёто всЄ выполн€етс€ перед Start(), инициализирует пресеты и сразу ставит первый из списка активным
+    void Awake()
     {
         InitPresets();
         preset = timerPresets[0];
@@ -27,8 +28,8 @@ public class StartTimer : MonoBehaviour
 
     void Start()
     {
-        timeStart = preset.InitialTime;
-        textTimer.text = preset.InitialTime.ToString();
+        timeStart = preset.WorkTime;
+        textTimer.text = preset.WorkTime.ToString();
     }
 
     void Update()
@@ -54,7 +55,7 @@ public class StartTimer : MonoBehaviour
         {
             timer_running = false;;
             break_time = false;
-            timeStart = preset.InitialTime;
+            timeStart = preset.WorkTime;
         }
 
         // «акончилс€ цикл, большой перерыв
@@ -79,7 +80,7 @@ public class StartTimer : MonoBehaviour
         timer_running = false;
         if (break_time == false)
         {
-            timeStart = preset.InitialTime;
+            timeStart = preset.WorkTime;
         }
         else if (break_time == true)
         {
@@ -105,7 +106,7 @@ public class StartTimer : MonoBehaviour
         else if (break_time == false || big_break_time == false)
         {
             timer_running = false;;
-            timeStart = preset.InitialTime;
+            timeStart = preset.WorkTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else if (big_break_time == true) 
@@ -120,15 +121,15 @@ public class StartTimer : MonoBehaviour
     {
         preset = timerPresets[id];
         TimerStop();
-        textTimer.text = preset.InitialTime.ToString();
+        textTimer.text = preset.WorkTime.ToString();
     }
 
     private void InitPresets()
     {
         timerPresets.Add(new TimerPreset());
-        timerPresets.Add(new TimerPreset(20, 15, 20));
-        timerPresets.Add(new TimerPreset(180, 30, 60));
-        timerPresets.Add(new TimerPreset(5, 2, 3));
+        timerPresets.Add(new TimerPreset(20, 15, 18, 3));
+        timerPresets.Add(new TimerPreset(180, 30, 60, 4));
+        timerPresets.Add(new TimerPreset(5, 2, 3, 4));
 
         List<string> optList = new();
         foreach (TimerPreset tp in timerPresets)
@@ -138,51 +139,3 @@ public class StartTimer : MonoBehaviour
     }
 }
 
-public class TimerPreset
-{
-    public float InitialTime { get; set; }
-    private float Def_InitialTime { get; set; }
-
-    public float BreakTime { get; set; }
-    private float Def_BreakTime { get; set; }
-
-    public float BigBreakTime { get; set; }
-    private float Def_BigBreakTime { get; set; }
-
-    public TimerPreset()
-    {
-        InitialTime = 60;
-        BreakTime = 30;
-        BigBreakTime = 45;
-
-        UpdateDefaults();
-    }
-
-    public TimerPreset(float InitialTime, float BreakTime, float BigBreakTime)
-    {
-        this.InitialTime = InitialTime;
-        this.BreakTime = BreakTime;
-        this.BigBreakTime = BigBreakTime;
-
-        UpdateDefaults();
-    }
-
-    public string Optionify() //»спользуетс€ дл€ динамического добавлени€ имеющихс€ пресетов в Dropdown
-    {
-        return $"{(int)InitialTime}/{(int)BreakTime}/{(int)BigBreakTime}";
-    }
-
-    public void ToDefault()
-    {
-        InitialTime = Def_InitialTime;
-        BreakTime = Def_BreakTime;
-        BigBreakTime = Def_BigBreakTime;
-    }
-
-    private void UpdateDefaults()
-    {
-        Def_InitialTime = InitialTime;
-        Def_BreakTime = BreakTime;
-        Def_BigBreakTime = BigBreakTime;
-    }
-}
