@@ -501,7 +501,7 @@ MonoBehaviour:
   audioOff: {fileID: 21300000, guid: b63baeb07a1575b458e8570f910dbc41, type: 3}
   audioState: {fileID: 0}
   toggle: {fileID: 0}
-  toggleValue: 0
+  isOn: 0
   audio: {fileID: 290422681}
 --- !u!82 &290422681
 AudioSource:
@@ -2487,6 +2487,7 @@ GameObject:
   - component: {fileID: 1320188515}
   - component: {fileID: 1320188519}
   - component: {fileID: 1320188520}
+  - component: {fileID: 1320188521}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2588,6 +2589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec0873f947ef4745b3c26f35f9d4125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  presetManager: {fileID: 1320188521}
   textTimer: {fileID: 1030580478}
   timeStart: 0
   work_periods: 3
@@ -2603,6 +2605,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b54902645d87b5946878adb6e5e7a7eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1320188521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320188514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5611d902f99ab44a87b5edfa7ecf64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1378756068

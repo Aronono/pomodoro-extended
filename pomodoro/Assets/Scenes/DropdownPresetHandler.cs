@@ -5,6 +5,7 @@ using TMPro;
 
 public class DropdownPresetHandler : MonoBehaviour
 {
+    /*
     public StartTimer timer;
     public TMP_Dropdown presetSelector;
 
@@ -18,4 +19,5 @@ public class DropdownPresetHandler : MonoBehaviour
         presetSelector.ClearOptions();
         presetSelector.AddOptions(optionList);
     }
+    */
 }

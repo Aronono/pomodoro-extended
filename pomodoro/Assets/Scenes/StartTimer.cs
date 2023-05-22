@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using static PresetManager;
 
 public class StartTimer : MonoBehaviour
 {
-    private List<TimerPreset> timerPresets = new();
-    public TimerPreset preset;
+    public PresetManager presetManager;
     public TMP_Text textTimer;
     public float timeStart;
-    public int work_periods = 3;
+    public int work_periods;
 
     public AudioClip cycleEndSnd;  // Звук при окончании цикла
     public AudioSource audiosrc;   // Аудиосорс нужен
@@ -22,14 +20,14 @@ public class StartTimer : MonoBehaviour
 
     void Awake()
     {
-        InitPresets();
-        preset = timerPresets[0];
+
     }
 
     void Start()
     {
-        timeStart = preset.WorkTime;
-        textTimer.text = preset.WorkTime.ToString();
+        timeStart = presetManager.activePreset.WorkTime;
+        work_periods = presetManager.activePreset.WorkCycles;
+        textTimer.text = presetManager.activePreset.WorkTime.ToString();
     }
 
     void Update()
@@ -46,7 +44,7 @@ public class StartTimer : MonoBehaviour
             timer_running = false;;
             break_time = true;
             work_periods--;
-            timeStart = preset.BreakTime;
+            timeStart = presetManager.activePreset.BreakTime;
             audiosrc.PlayOneShot(cycleEndSnd);  // Звук победы 
         }
 
@@ -55,7 +53,7 @@ public class StartTimer : MonoBehaviour
         {
             timer_running = false;;
             break_time = false;
-            timeStart = preset.WorkTime;
+            timeStart = presetManager.activePreset.WorkTime;
         }
 
         // Закончился цикл, большой перерыв
@@ -64,7 +62,7 @@ public class StartTimer : MonoBehaviour
             timer_running = false;;
             work_periods = 3;
             big_break_time = true;
-            timeStart = preset.BigBreakTime;
+            timeStart = presetManager.activePreset.BigBreakTime;
         }
     }
 
@@ -80,15 +78,15 @@ public class StartTimer : MonoBehaviour
         timer_running = false;
         if (break_time == false)
         {
-            timeStart = preset.WorkTime;
+            timeStart = presetManager.activePreset.WorkTime;
         }
         else if (break_time == true)
         {
-            timeStart = preset.BreakTime;
+            timeStart = presetManager.activePreset.BreakTime;
         }
         else if (big_break_time == true)
         {
-            timeStart = preset.BigBreakTime;
+            timeStart = presetManager.activePreset.BigBreakTime;
         }
         textTimer.text = Mathf.Round(timeStart).ToString();
     }
@@ -99,42 +97,21 @@ public class StartTimer : MonoBehaviour
         if (break_time == true)
         {
             timer_running = false;;
-            timeStart = preset.BreakTime;
+            timeStart = presetManager.activePreset.BreakTime;
             work_periods--;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else if (break_time == false || big_break_time == false)
         {
             timer_running = false;;
-            timeStart = preset.WorkTime;
+            timeStart = presetManager.activePreset.WorkTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else if (big_break_time == true) 
         {
             timer_running = false;;
-            timeStart = preset.BigBreakTime;
+            timeStart = presetManager.activePreset.BigBreakTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
-        }
-    }
-
-    public void SetPreset(int id)
-    {
-        preset = timerPresets[id];
-        TimerStop();
-        textTimer.text = preset.WorkTime.ToString();
-    }
-
-    private void InitPresets()
-    {
-        timerPresets.Add(new TimerPreset());
-        timerPresets.Add(new TimerPreset(20, 15, 18, 3));
-        timerPresets.Add(new TimerPreset(180, 30, 60, 4));
-        timerPresets.Add(new TimerPreset(5, 2, 3, 4));
-
-        List<string> optList = new();
-        foreach (TimerPreset tp in timerPresets)
-        {
-            optList.Add(tp.Optionify());
         }
     }
 }
