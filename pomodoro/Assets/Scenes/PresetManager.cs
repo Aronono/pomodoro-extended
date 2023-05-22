@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 
 public class PresetManager : MonoBehaviour
 {
+    public StartTimer timerScript;
+
     public TMP_Dropdown presetDropdown;
 
     public List<TimerPreset> availablePresets = new();
@@ -62,11 +64,28 @@ public class PresetManager : MonoBehaviour
 
             UpdateOptions();
         }
+
+        activePreset = availablePresets[availablePresets.Count - 1];
+        presetDropdown.value = presetDropdown.options.Count - 1;
+
+        timerScript.UpdateVals();
     }
 
     public void PresetEdit()
     {
+        timerScript.TimerStop();
 
+        activePreset.WorkTime = (float)Convert.ToDouble(InputWorkTime.text);
+        activePreset.BreakTime = (float)Convert.ToDouble(InputBreakTime.text);
+        activePreset.BigBreakTime = (float)Convert.ToDouble(InputBigBreakTime.text);
+        activePreset.WorkCycles = Convert.ToInt32(InputWorkCycles.text);
+
+        int currentOption = presetDropdown.value;
+        optionList[presetDropdown.value] = activePreset.ToString();
+        UpdateOptions();
+        presetDropdown.value = currentOption;
+
+        timerScript.UpdateVals();
     }
 
     public void PresetDelete()
@@ -76,12 +95,16 @@ public class PresetManager : MonoBehaviour
 
     public void PresetSet()
     {
+        timerScript.TimerStop();
+
         activePreset = availablePresets[presetDropdown.value];
 
         InputWorkTime.text = activePreset.WorkTime.ToString();
         InputBreakTime.text = activePreset.BreakTime.ToString();
         InputBigBreakTime.text = activePreset.BigBreakTime.ToString();
         InputWorkCycles.text = activePreset.WorkCycles.ToString();
+
+        timerScript.UpdateVals();
     }
 
     public class TimerPreset

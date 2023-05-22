@@ -23,11 +23,16 @@ public class StartTimer : MonoBehaviour
 
     }
 
-    void Start()
+    public void UpdateVals()
     {
         timeStart = presetManager.activePreset.WorkTime;
         work_periods = presetManager.activePreset.WorkCycles;
         textTimer.text = presetManager.activePreset.WorkTime.ToString();
+    }
+
+    void Start()
+    {
+        UpdateVals();
     }
 
     void Update()
@@ -65,8 +70,6 @@ public class StartTimer : MonoBehaviour
             timeStart = presetManager.activePreset.BigBreakTime;
         }
     }
-
-
 
     public void TimerStart()
     {
