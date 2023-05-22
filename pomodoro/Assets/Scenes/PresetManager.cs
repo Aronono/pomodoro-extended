@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
 
 public class PresetManager : MonoBehaviour
 {
@@ -90,7 +91,19 @@ public class PresetManager : MonoBehaviour
 
     public void PresetDelete()
     {
+        timerScript.TimerStop();
+        if(availablePresets.Count != 1 && presetDropdown.value != 0) {
+            optionList.RemoveAt(presetDropdown.value);
+            activePreset = availablePresets[presetDropdown.value - 1];
+            availablePresets.RemoveAt(presetDropdown.value);
+            presetDropdown.value--;
 
+            int currentOption = presetDropdown.value;
+            UpdateOptions();
+            presetDropdown.value = currentOption;
+
+            timerScript.UpdateVals();
+        }
     }
 
     public void PresetSet()

@@ -344,7 +344,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 485667822}
         m_TargetAssemblyTypeName: PresetManager, Assembly-CSharp
-        m_MethodName: PresetAdd
+        m_MethodName: PresetDelete
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

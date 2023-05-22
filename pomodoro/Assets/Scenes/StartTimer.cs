@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Threading;
 
 public class StartTimer : MonoBehaviour
 {
@@ -25,9 +26,17 @@ public class StartTimer : MonoBehaviour
 
     public void UpdateVals()
     {
-        timeStart = presetManager.activePreset.WorkTime;
-        work_periods = presetManager.activePreset.WorkCycles;
-        textTimer.text = presetManager.activePreset.WorkTime.ToString();
+        if(presetManager.activePreset == null)
+        {
+            timeStart = 0;
+            work_periods = 0;
+            textTimer.text = timeStart.ToString();
+        } else
+        {
+            timeStart = presetManager.activePreset.WorkTime;
+            work_periods = presetManager.activePreset.WorkCycles;
+            textTimer.text = presetManager.activePreset.WorkTime.ToString();
+        }
     }
 
     void Start()
