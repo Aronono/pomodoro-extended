@@ -8,9 +8,14 @@ public class StartTimer : MonoBehaviour
 {
     private List<TimerPreset> timerPresets = new();
     public TimerPreset preset;
+    public int work_time;
+    public int rest_time;
+    public int long_rest_time;
     public TMP_Text textTimer;
     public float timeStart;
     public int work_periods = 3;
+    public Image timerBar;
+    public float timeMax;
 
     public AudioClip cycleEndSnd;  // Звук при окончании цикла
     public AudioSource audiosrc;   // Аудиосорс нужен
@@ -23,11 +28,14 @@ public class StartTimer : MonoBehaviour
     {
         InitPresets();
         preset = timerPresets[0];
+        timerBar = GameObject.Find("TimerBar").GetComponent<Image>();
+        timerBar.fillAmount = 0;
     }
 
     void Start()
     {
         timeStart = preset.InitialTime;
+        timeMax = preset.InitialTime;
         textTimer.text = preset.InitialTime.ToString();
     }
 
@@ -37,6 +45,7 @@ public class StartTimer : MonoBehaviour
         if (timer_running)
         {
             timeStart -= Time.deltaTime;
+            timerBar.fillAmount = 1.0f - (timeStart * 100 / timeMax) / 100;
         }
 
         // Начало перерыва
@@ -46,6 +55,7 @@ public class StartTimer : MonoBehaviour
             break_time = true;
             work_periods--;
             timeStart = preset.BreakTime;
+            timeMax = preset.BreakTime;
             audiosrc.PlayOneShot(cycleEndSnd);  // Звук победы 
         }
 
@@ -55,6 +65,7 @@ public class StartTimer : MonoBehaviour
             timer_running = false;;
             break_time = false;
             timeStart = preset.InitialTime;
+            timeMax = preset.InitialTime;
         }
 
         // Закончился цикл, большой перерыв
@@ -64,6 +75,7 @@ public class StartTimer : MonoBehaviour
             work_periods = 3;
             big_break_time = true;
             timeStart = preset.BigBreakTime;
+            timeMax = preset.BigBreakTime;
         }
     }
 
@@ -80,15 +92,19 @@ public class StartTimer : MonoBehaviour
         if (break_time == false)
         {
             timeStart = preset.InitialTime;
+            timeMax = preset.InitialTime;
         }
         else if (break_time == true)
         {
             timeStart = preset.BreakTime;
+            timeMax = preset.BreakTime;
         }
         else if (big_break_time == true)
         {
             timeStart = preset.BigBreakTime;
+            timeMax = preset.BigBreakTime;
         }
+        timerBar.fillAmount = 0;
         textTimer.text = Mathf.Round(timeStart).ToString();
     }
 
@@ -97,8 +113,9 @@ public class StartTimer : MonoBehaviour
         break_time = !break_time;
         if (break_time == true)
         {
-            timer_running = false;;
+            timer_running = false;
             timeStart = preset.BreakTime;
+            timeMax = preset.BreakTime;
             work_periods--;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
@@ -106,14 +123,17 @@ public class StartTimer : MonoBehaviour
         {
             timer_running = false;;
             timeStart = preset.InitialTime;
+            timeMax = preset.InitialTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else if (big_break_time == true) 
         {
             timer_running = false;;
             timeStart = preset.BigBreakTime;
+            timeMax = preset.BigBreakTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
+        timerBar.fillAmount = 0;
     }
 
     public void SetPreset(int id)
