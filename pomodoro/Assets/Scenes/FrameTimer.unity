@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 21405793}
   - component: {fileID: 21405792}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: MoneyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 275.63, y: -78.399956}
+  m_AnchoredPosition: {x: 275.63, y: -78.4}
   m_SizeDelta: {x: 551.25, y: 156.7999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &21405792
@@ -2199,7 +2199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.16684452}
   m_AnchorMax: {x: 0.5, y: 0.16684452}
-  m_AnchoredPosition: {x: 0.00005343184, y: 0.00018310547}
+  m_AnchoredPosition: {x: 0.00005343184, y: 0.00024414062}
   m_SizeDelta: {x: 177.2432, y: 172.4187}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &963241164
@@ -3169,6 +3169,8 @@ MonoBehaviour:
   timeMax: 0
   cycleEndSnd: {fileID: 8300000, guid: 110f920311d55d24b8eed87a51a8dae6, type: 3}
   audiosrc: {fileID: 290422681}
+  money: 0
+  moneyText: {fileID: 21405793}
 --- !u!114 &1320188520
 MonoBehaviour:
   m_ObjectHideFlags: 0
