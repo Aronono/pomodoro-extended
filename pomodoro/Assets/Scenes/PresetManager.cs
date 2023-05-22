@@ -32,6 +32,8 @@ public class PresetManager : MonoBehaviour
         availablePresets.Add(activePreset);
         optionList.Add(activePreset.ToString());
         presetDropdown.AddOptions(optionList);
+
+        PresetSet();
     }
 
     private void UpdateOptions()
@@ -44,34 +46,21 @@ public class PresetManager : MonoBehaviour
     {
         TimerPreset temp = new TimerPreset((float)Convert.ToDouble(InputWorkTime.text), (float)Convert.ToDouble(InputBreakTime.text),
             (float)Convert.ToDouble(InputBigBreakTime.text), Convert.ToInt32(InputWorkCycles.text));
-        while (true)
-        {
-            bool unique = true;
-            temp.ID = Random.Range(0, int.MaxValue);
 
-            foreach (TimerPreset preset in availablePresets)
+        bool unique = true;
+        foreach (TimerPreset preset in availablePresets) {
+            if(preset.GetHashCode() == temp.GetHashCode())
             {
-                if(preset.ID == temp.ID)
-                {
-                    unique = false;
-                    break;
-                }
-            }
-
-            if (unique)
-            {
-                break;
+                unique = false;
             }
         }
 
-        availablePresets.Add(temp);
-        optionList.Add(temp.ToString());
-
-        UpdateOptions();
-
-        foreach(TMP_InputField field in inputFields)
+        if(unique)
         {
-            field.text = string.Empty;
+            availablePresets.Add(temp);
+            optionList.Add(temp.ToString());
+
+            UpdateOptions();
         }
     }
 
@@ -87,12 +76,12 @@ public class PresetManager : MonoBehaviour
 
     public void PresetSet()
     {
-        
-    }
+        activePreset = availablePresets[presetDropdown.value];
 
-    private void PresetToGUI(TimerPreset preset)
-    {
-
+        InputWorkTime.text = activePreset.WorkTime.ToString();
+        InputBreakTime.text = activePreset.BreakTime.ToString();
+        InputBigBreakTime.text = activePreset.BigBreakTime.ToString();
+        InputWorkCycles.text = activePreset.WorkCycles.ToString();
     }
 
     public class TimerPreset
@@ -109,15 +98,12 @@ public class PresetManager : MonoBehaviour
         public int WorkCycles { get; set; }
         private int Def_WorkCycles { get; } = 4;
 
-        public int ID { get; set; }
-
         public TimerPreset()
         {
             WorkTime = Def_WorkTime;
             BreakTime = Def_BreakTime;
             BigBreakTime = Def_BigBreakTime;
             WorkCycles = Def_WorkCycles;
-            ID = 1;
         }
 
         public TimerPreset(float InitialTime, float BreakTime, float BigBreakTime, int WorkCycles)
