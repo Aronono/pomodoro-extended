@@ -23,6 +23,8 @@ public class StartTimer : MonoBehaviour
     public int money;               // Количество денег   
     public TMP_Text moneyText;      // Отображение денег
 
+    public StartPauseChange changer; //"переключатель" иконки паузы и старта
+
     bool timer_running = false;
     bool break_time = false;
     bool big_break_time = false;
@@ -61,6 +63,7 @@ public class StartTimer : MonoBehaviour
         // Начало перерыва
         if (timeStart <= 0 && break_time == false)
         {
+            changer.StartIcon();
             timer_running = false;;
             break_time = true;
             work_periods--;
@@ -76,6 +79,7 @@ public class StartTimer : MonoBehaviour
         // Возобновление рабочего цикла
         if (timeStart <= 0 && break_time == true)
         {
+            changer.StartIcon();
             timer_running = false;;
             break_time = false;
             timeStart = preset.InitialTime;
@@ -85,6 +89,7 @@ public class StartTimer : MonoBehaviour
         // Закончился цикл, большой перерыв
         if (work_periods == 0)
         {
+            changer.StartIcon();
             timer_running = false;;
             work_periods = 3;
             big_break_time = true;
