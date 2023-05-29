@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
+using TMPro;
+using Firebase.Database;
+using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
 
 public class FireBaseAuth : MonoBehaviour
 {
@@ -10,6 +14,7 @@ public class FireBaseAuth : MonoBehaviour
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;
     public FirebaseUser user;
+    public DatabaseReference DBRef;
 
     //Login
     public InputField log_field;
@@ -19,6 +24,9 @@ public class FireBaseAuth : MonoBehaviour
     public InputField reg_log_field;
     public InputField reg_pass_field;
     public InputField confirm_field;
+
+    //Warning
+    public TMP_Text Warning;
 
     private void Awake()
     {
@@ -44,6 +52,7 @@ public class FireBaseAuth : MonoBehaviour
 
         auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
+        DBRef = FirebaseDatabase.DefaultInstance.RootReference; // ѕолучает расположение базы данных 
     }
 
     void AuthStateChanged(object sender, System.EventArgs e)
@@ -79,28 +88,32 @@ public class FireBaseAuth : MonoBehaviour
             FirebaseException fbExc = loginTask.Exception.GetBaseException() as FirebaseException;
             AuthError authError = (AuthError)fbExc.ErrorCode;
 
-            string err_msg = "Could not log in: ";
+            string err_msg = "Login Failed!";
 
             switch (authError)
             {
                 case AuthError.InvalidEmail:
-                    err_msg += "Incorrect login";
+                    err_msg = "Incorrect login";
                     break;
                 case AuthError.WrongPassword:
-                    err_msg += "Incorrect password";
+                    err_msg = "Incorrect password";
                     break;
                 case AuthError.MissingEmail:
-                    err_msg += "Missing email";
+                    err_msg = "Missing email";
                     break;
                 case AuthError.MissingPassword:
-                    err_msg += "Missing password";
+                    err_msg = "Missing password";
+                    break;
+                case AuthError.UserNotFound:
+                    err_msg = "User not found";
                     break;
             }
-            Debug.Log(err_msg);
+            Warning.SetText(err_msg);
         }
         else
         {
-            Debug.Log("You have logged in!");
+            StartCoroutine(LoadData()); // «агрузка данных пользовател€ в случае удачного логина
+            SceneManager.LoadScene(0); //«агрузка сцены в случае удачного логина
         }
     }
 
@@ -113,11 +126,11 @@ public class FireBaseAuth : MonoBehaviour
     {
         if (login == "")
         {
-            Debug.LogError("Login field is empty!");
+            Warning.SetText("Login field is empty!");
         }
         else if (reg_pass_field.text != confirm_field.text)
         {
-            Debug.LogError("Passwords don't match!");
+            Warning.SetText("Passwords don't match!");
         }
         else
         {
@@ -132,21 +145,21 @@ public class FireBaseAuth : MonoBehaviour
                 FirebaseException fbExc = regTask.Exception.GetBaseException() as FirebaseException;
                 AuthError authError = (AuthError)fbExc.ErrorCode;
 
-                string err_msg = "Could not register: ";
+                string err_msg = "Could not register!";
 
                 switch (authError)
                 {
                     case AuthError.InvalidEmail:
-                        err_msg += "Incorrect login";
+                        err_msg = "Incorrect login";
                         break;
                     case AuthError.MissingEmail:
-                        err_msg += "Missing email";
+                        err_msg = "Missing email";
                         break;
                     case AuthError.MissingPassword:
-                        err_msg += "Missing password";
+                        err_msg = "Missing password";
                         break;
                 }
-                Debug.Log(err_msg);
+                Warning.SetText(err_msg);
             }
             else
             {
@@ -181,12 +194,13 @@ public class FireBaseAuth : MonoBehaviour
                             err_msg = "Missing password";
                             break;
                     }
-                    Debug.Log(err_msg);
+                    Warning.SetText(err_msg); 
 
                 }
                 else
                 {
-                    Debug.Log("Welcome to Pomodoro Tracker!");
+                    StartCoroutine(UpdateMoney(0)); //”станавливаем значение денег 0, т.к. новый пользователь
+                    SceneManager.LoadScene(0);
                 }
             }
         }
@@ -195,6 +209,36 @@ public class FireBaseAuth : MonoBehaviour
     public void Register()
     {
         StartCoroutine(RegisterAsync(reg_log_field.text, reg_pass_field.text, confirm_field.text));
+    }
+
+    public IEnumerator UpdateMoney(int money) //‘ункци€ обновлени€ денег
+    {
+        var DBTask = DBRef.Child("users").Child(user.UserId).Child("money").SetValueAsync(money); //≈сли правильно пон€л, обращаетс€ к полю денег пользовател€ через его ID и устанавливает значение через параметр money
+
+        yield return new WaitUntil(() => DBTask.IsCompleted);
+        if (DBTask.Exception != null)
+        {
+            Debug.LogWarning("Fail");
+        }
+        else
+        {
+            Debug.Log("Success");
+        }
+    }
+
+    public IEnumerator LoadData() //‘ункци€ получени€ значени€ денег
+    {
+        var DBTask = DBRef.Child("users").Child(user.UserId).Child("money").GetValueAsync();//јналогично, если € правильно пон€л, обращаетс€ к полю денег пользовател€ через его ID и получает значение денег
+
+        yield return new WaitUntil(() => DBTask.IsCompleted);
+        if (DBTask.Exception != null)
+        {
+            Debug.LogWarning("Fail");
+        }
+        else
+        {
+            Debug.Log("Success");
+        }
     }
 }
 
