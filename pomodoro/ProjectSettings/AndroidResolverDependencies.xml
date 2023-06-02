@@ -6,6 +6,10 @@
     <package>com.google.firebase:firebase-auth:22.0.0</package>
     <package>com.google.firebase:firebase-auth-unity:11.0.0</package>
     <package>com.google.firebase:firebase-common:20.3.2</package>
+    <package>com.google.firebase:firebase-database:20.2.1</package>
+    <package>com.google.firebase:firebase-database-unity:11.0.0</package>
+    <package>com.google.firebase:firebase-firestore:24.6.0</package>
+    <package>com.google.firebase:firebase-firestore-unity:11.0.0</package>
   </packages>
   <files />
   <settings>
