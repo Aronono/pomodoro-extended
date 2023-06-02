@@ -15,21 +15,31 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource audio;
 
-    // Start is called before the first frame update
+    void Awake()
+    {
+        if (PlayerPrefs.HasKey("soundsetting"))
+        {
+            isOn = PlayerPrefs.GetInt("soundsetting");          // Подгружаем PP 
+        }
+    }
+
+    // При переходе на экран настроек настройка подгрузится
     void Start()
     {
-        if (AudioListener.volume == 1)
+        if (isOn == 1)
         {
             toggle.isOn = true;
             audioState.GetComponent<Image>().sprite = audioOn;
-            isOn = 1;
+            AudioListener.volume = 1;
         }
+
         else
         {
+            AudioListener.volume = 0;
             toggle.isOn = false;
             audioState.GetComponent<Image>().sprite = audioOff;
-            isOn = 0;
         }
+
     }
 
     // Update is called once per frame
@@ -44,19 +54,24 @@ public class AudioManager : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(clip);
     }
 
-    public void OnOffAudio()
+    public void OnOffAudio()    // Переключение из вкл в выкл
     {
         if (isOn == 1)
         {
+            toggle.isOn = false;
+            audioState.GetComponent<Image>().sprite = audioOff;
             AudioListener.volume = 0;
             isOn = 0;
-            audioState.GetComponent<Image>().sprite = audioOff;
         }
-        else
+
+        else if (isOn == 0)     // Переключение из выкл во вкл
         {
+            toggle.isOn = true;
+            audioState.GetComponent<Image>().sprite = audioOn;
             AudioListener.volume = 1;
             isOn = 1;
-            audioState.GetComponent<Image>().sprite = audioOn;
         }
+
+        PlayerPrefs.SetInt("soundsetting", isOn);       // Записываем новое значение в PP
     }
 }
