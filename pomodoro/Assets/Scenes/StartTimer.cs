@@ -8,14 +8,13 @@ using Firebase.Database;
 
 public class StartTimer : MonoBehaviour
 {
-    private List<TimerPreset> timerPresets = new();
-    public TimerPreset preset;
+    public PresetManager presetManager;
     public int work_time;
     public int rest_time;
     public int long_rest_time;
     public TMP_Text textTimer;
     public float timeStart;
-    public int work_periods = 3;
+    public int work_periods;
     public Image timerBar;
     public float timeMax;
 
@@ -34,17 +33,16 @@ public class StartTimer : MonoBehaviour
     void Awake()                    // Это всё выполняется перед Start(),
                                     // инициализирует пресеты и сразу ставит первый из списка активным
     {
-        InitPresets();
-        preset = timerPresets[0];
         timerBar = GameObject.Find("TimerBar").GetComponent<Image>();
         timerBar.fillAmount = 0;
     }
 
     void Start()
     {
-        timeStart = preset.InitialTime;
-        timeMax = preset.InitialTime;
-        textTimer.text = preset.InitialTime.ToString();
+        timeStart = presetManager.activePreset.WorkTime;
+        timeMax = presetManager.activePreset.WorkTime;
+        textTimer.text = presetManager.activePreset.WorkTime.ToString();
+        work_periods = presetManager.activePreset.WorkCycles;
 
         if(PlayerPrefs.HasKey("money"))
         {
@@ -69,8 +67,8 @@ public class StartTimer : MonoBehaviour
             timer_running = false;;
             break_time = true;
             work_periods--;
-            timeStart = preset.BreakTime;
-            timeMax = preset.BreakTime;
+            timeStart = presetManager.activePreset.BreakTime;
+            timeMax = presetManager.activePreset.BreakTime;
 
             money++;                                // Плюс деньга
             audiosrc.PlayOneShot(cycleEndSnd);      // Звук деньги
@@ -84,8 +82,8 @@ public class StartTimer : MonoBehaviour
             changer.StartIcon();
             timer_running = false;;
             break_time = false;
-            timeStart = preset.InitialTime;
-            timeMax = preset.InitialTime;
+            timeStart = presetManager.activePreset.WorkTime;
+            timeMax = presetManager.activePreset.WorkTime;
         }
 
         // Закончился цикл, большой перерыв
@@ -95,8 +93,8 @@ public class StartTimer : MonoBehaviour
             timer_running = false;;
             work_periods = 3;
             big_break_time = true;
-            timeStart = preset.BigBreakTime;
-            timeMax = preset.BigBreakTime;
+            timeStart = presetManager.activePreset.BigBreakTime;
+            timeMax = presetManager.activePreset.BigBreakTime;
         }
     }
 
@@ -112,18 +110,18 @@ public class StartTimer : MonoBehaviour
         timer_running = false;
         if (break_time == false)
         {
-            timeStart = preset.InitialTime;
-            timeMax = preset.InitialTime;
+            timeStart = presetManager.activePreset.WorkTime;
+            timeMax = presetManager.activePreset.WorkTime;
         }
         else if (break_time == true)
         {
-            timeStart = preset.BreakTime;
-            timeMax = preset.BreakTime;
+            timeStart = presetManager.activePreset.BreakTime;
+            timeMax = presetManager.activePreset.BreakTime;
         }
         else if (big_break_time == true)
         {
-            timeStart = preset.BigBreakTime;
-            timeMax = preset.BigBreakTime;
+            timeStart = presetManager.activePreset.BigBreakTime;
+            timeMax = presetManager.activePreset.BigBreakTime;
         }
         timerBar.fillAmount = 0;
         textTimer.text = Mathf.Round(timeStart).ToString();
@@ -135,23 +133,23 @@ public class StartTimer : MonoBehaviour
         if (break_time == true)
         {
             timer_running = false;
-            timeStart = preset.BreakTime;
-            timeMax = preset.BreakTime;
+            timeStart = presetManager.activePreset.BreakTime;
+            timeMax = presetManager.activePreset.BreakTime;
             work_periods--;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else if (break_time == false || big_break_time == false)
         {
             timer_running = false;;
-            timeStart = preset.InitialTime;
-            timeMax = preset.InitialTime;
+            timeStart = presetManager.activePreset.WorkTime;
+            timeMax = presetManager.activePreset.WorkTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         else if (big_break_time == true) 
         {
             timer_running = false;;
-            timeStart = preset.BigBreakTime;
-            timeMax = preset.BigBreakTime;
+            timeStart = presetManager.activePreset.BigBreakTime;
+            timeMax = presetManager.activePreset.BigBreakTime;
             textTimer.text = Mathf.Round(timeStart).ToString();
         }
         timerBar.fillAmount = 0;
@@ -159,71 +157,7 @@ public class StartTimer : MonoBehaviour
 
     public void SetPreset(int id)
     {
-        preset = timerPresets[id];
         TimerStop();
-        textTimer.text = preset.InitialTime.ToString();
-    }
-
-    private void InitPresets()
-    {
-        timerPresets.Add(new TimerPreset());
-        timerPresets.Add(new TimerPreset(20, 15, 20));
-        timerPresets.Add(new TimerPreset(180, 30, 60));
-        timerPresets.Add(new TimerPreset(5, 2, 3));
-
-        List<string> optList = new();
-        foreach (TimerPreset tp in timerPresets)
-        {
-            optList.Add(tp.Optionify());
-        }
-    }
-}
-
-public class TimerPreset
-{
-    public float InitialTime { get; set; }
-    private float Def_InitialTime { get; set; }
-
-    public float BreakTime { get; set; }
-    private float Def_BreakTime { get; set; }
-
-    public float BigBreakTime { get; set; }
-    private float Def_BigBreakTime { get; set; }
-
-    public TimerPreset()
-    {
-        InitialTime = 5;            // Для теста денег уменьшил рабочий период
-        BreakTime = 30;
-        BigBreakTime = 45;
-
-        UpdateDefaults();
-    }
-
-    public TimerPreset(float InitialTime, float BreakTime, float BigBreakTime)
-    {
-        this.InitialTime = InitialTime;
-        this.BreakTime = BreakTime;
-        this.BigBreakTime = BigBreakTime;
-
-        UpdateDefaults();
-    }
-
-    public string Optionify() //Используется для динамического добавления имеющихся пресетов в Dropdown
-    {
-        return $"{(int)InitialTime}/{(int)BreakTime}/{(int)BigBreakTime}";
-    }
-
-    public void ToDefault()
-    {
-        InitialTime = Def_InitialTime;
-        BreakTime = Def_BreakTime;
-        BigBreakTime = Def_BigBreakTime;
-    }
-
-    private void UpdateDefaults()
-    {
-        Def_InitialTime = InitialTime;
-        Def_BreakTime = BreakTime;
-        Def_BigBreakTime = BigBreakTime;
+        textTimer.text = presetManager.activePreset.WorkTime.ToString();
     }
 }

@@ -3071,6 +3071,7 @@ GameObject:
   - component: {fileID: 1320188520}
   - component: {fileID: 1320188521}
   - component: {fileID: 1320188522}
+  - component: {fileID: 1320188523}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3172,6 +3173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec0873f947ef4745b3c26f35f9d4125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  presetManager: {fileID: 1320188523}
   work_time: 0
   rest_time: 0
   long_rest_time: 0
@@ -3221,6 +3223,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91377639076a3a845a54ec21c39bd11e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1320188523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320188514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5611d902f99ab44a87b5edfa7ecf64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerScript: {fileID: 1320188519}
+  PresetAnchor: {fileID: 0}
+  InputWorkTime: {fileID: 0}
+  InputBreakTime: {fileID: 0}
+  InputBigBreakTime: {fileID: 0}
+  InputWorkCycles: {fileID: 0}
 --- !u!1 &1378756068
 GameObject:
   m_ObjectHideFlags: 0
